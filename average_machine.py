@@ -18,7 +18,7 @@ import time
 # Type of extensions you are willing to accept
 ext = "JPG|jpeg|jpg|png"
 # Base path for source images and average destination
-source_path = "./source/"
+source_path = "./all-mob/"
 average_path = "./average/"
 
 
@@ -71,12 +71,12 @@ def create_average(screen, photos):
     center_y = screen_height / 2;
 
     # we will resize all photos to have an area around this.
-    phi = (1 + math.sqrt(5)) / 2
+    phi = 1
     standard_area = screen_width * (screen_width/phi)
     
 
     # prototype black screen all images get pasted onto. 
-    black = Image.new("RGB", screen, "black")
+    black = Image.new("RGBA", screen)
     average = black.copy()
 
     
@@ -163,7 +163,7 @@ def main(*argv):
 
     photos = get_photos_from_directory(source_path)
     average = create_average(screen, photos)
-    average.save(file)
+    average.save(file, 'PNG')
 
 if __name__ == '__main__':
     sys.exit(main(*sys.argv))
