@@ -7,20 +7,15 @@ __author__ = "Arlo Carreon <http://arlocarreon.com>"
 #  generate an "average" image from local directory
 
 
-
 import sys
 import os
 import re
 import math
-import Image
-import time
+from PIL import Image
+from optparse import OptionParser
 
 # Type of extensions you are willing to accept
 ext = "JPG|jpeg|jpg|png"
-# Base path for source images and average destination
-source_path = "./all-mob/"
-average_path = "./average/"
-
 
 # Function grabs all images in a folder
 def get_photos_from_directory( path ):
@@ -61,7 +56,7 @@ def resize(im, screen, standard_area):
     return im.resize((width,height), Image.BICUBIC)
 
 
-def create_average(screen, photos):
+def create_average(screen, photos, source_path):
     
     debug("starting")
 
@@ -85,7 +80,7 @@ def create_average(screen, photos):
         debug("processing >> %s" % photos[i])
         
         try:
-            im = load_image(photos[i]);
+            im = load_image(source_path, photos[i]);
         except: 
             debug("Bad Image? Script no likie.")
             continue
@@ -114,7 +109,7 @@ def create_average(screen, photos):
     return average
         
 
-def load_image(photo):
+def load_image(source_path, photo):
     im = Image.open(source_path+photo)
     return im
     
@@ -123,46 +118,28 @@ def debug(msg):
     sys.stderr.write(msg + "\n")
 
 def main(*argv):
-    from getopt import getopt, GetoptError
+    parser = OptionParser("usage: %prog [options] source_dir dest_file")
+    parser.add_option("-x", "--height", dest="height", default=500,
+                      help="height of the output file")
+    parser.add_option("-y", "--width", dest="width", default=500,
+                      help="width of the output file")
 
-    try:
-        (opts, args) = getopt(argv[1:], 'p:w:h:f:n:u', ['page', 'width', 'height', 'file', 'number','unique'])
-    except GetoptError, e:
-        print e
-        print __doc__
-        return 1
+    (options, args) = parser.parse_args()
 
-    file = average_path + str(time.time()) + '.jpg'
-    width = 500
-    height = 500
-    n = 100
-    unique_owners = False
-    start_page = 0 
-   
-    for o, a in opts:
-        if o in ('-w', '--width'):
-            width = int(a)
-        elif o in ('-h', '--height'):
-            height = int(a)
-        elif o in ('-f', '--file'):
-            file = average_path + a
-        elif o in ('-n', '--number'):
-            n = int(a)
-        elif o in ('-u', '--unique'):
-           unique_owners = True
-        elif o in ('-p', '--page'):
-           start_page = int(a)
-        else:
-            print "Unknown argument: %s" % o
-            print __doc__
-            return 1
+    source_dir = './'
+    file = './average.png'
+
+    if (len(args) > 0):
+        source_dir = args[0]
+
+    if (len(args) > 1):
+        file = args[1]
 
     # Set the screen
-    screen = (width, height)
+    screen = (options.width, options.height)
 
-
-    photos = get_photos_from_directory(source_path)
-    average = create_average(screen, photos)
+    photos = get_photos_from_directory(source_dir)
+    average = create_average(screen, photos, source_dir)
     average.save(file, 'PNG')
 
 if __name__ == '__main__':
