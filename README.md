@@ -1,39 +1,29 @@
-# Geek Art
+# Image Average
 
-Python Script, derived from Neil Kandalgaonkar (brevity.org), creates an image average of a group of images located in directory `source`.
+Take a directory of images and build an "average"
+
 
 ## Dependencies
 
 * Python Imaging Library [http://www.pythonware.com/products/pil/]
-* Python >= 2.2
-
-### Python Imaging Library (PIL) on Mac OSx
-
-All you need to do is install Python Imaging Library via `easy_install`
 
 ```shell
-easy_install pil
+pip install Pillow
 ```
 
-
-## Instructions
+## Usage
 
 ```shell
-git clone git://github.com/mexitek/python-image-averaging.git
-cd python-image-averaging
-# Place your images in source/ folder
-python average_machine.py [OPTIONS]
+Usage: average_machine.py [options] source_dir dest_file
+
+Options:
+  -h, --help            show this help message and exit
+  -x HEIGHT, --height=HEIGHT
+                        height of the output file
+  -y WIDTH, --width=WIDTH
+                        width of the output file
 ```
 
-### Options
+## History
 
-```
--w screenwidth or --width   screenwidth
--h screenheight or --height screenheight
--f filename or --file       filename
--n photos or --number       photos
-```
-## Image Out Example
-<img src="https://raw.github.com/mexitek/python-image-averaging/master/average/1321255741.95.jpg" />
-
-# License: [arlo.mit-license.org](http://arlo.mit-license.org)
+Forked from [mexitek](https://github.com/mexitek/python-image-averaging), derived from [Neil Kandalgaonkar](brevity.org)

@@ -80,7 +80,7 @@ def create_average(screen, photos, source_path):
         debug("processing >> %s" % photos[i])
         
         try:
-            im = load_image(source_path, photos[i]);
+            im = Image.open(source_path + photos[i]);
         except: 
             debug("Bad Image? Script no likie.")
             continue
@@ -107,17 +107,12 @@ def create_average(screen, photos, source_path):
         del im
 
     return average
-        
-
-def load_image(source_path, photo):
-    im = Image.open(source_path+photo)
-    return im
-    
 
 def debug(msg):
     sys.stderr.write(msg + "\n")
 
 def main(*argv):
+
     parser = OptionParser("usage: %prog [options] source_dir dest_file")
     parser.add_option("-x", "--height", dest="height", default=500,
                       help="height of the output file")
